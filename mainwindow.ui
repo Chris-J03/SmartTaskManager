@@ -14,26 +14,41 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="verticalLayoutWidget">
+   <widget class="QPushButton" name="btnAddTask">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>361</width>
-      <height>224</height>
+      <x>380</x>
+      <y>50</y>
+      <width>88</width>
+      <height>25</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QTextEdit" name="textEdit_2"/>
-     </item>
-     <item>
-      <widget class="QTextEdit" name="textEdit_3"/>
-     </item>
-     <item>
-      <widget class="QTextEdit" name="textEdit"/>
-     </item>
-    </layout>
+    <property name="text">
+     <string>Add Task</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="txtAddTask">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>40</y>
+      <width>311</width>
+      <height>41</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnDisplayTask">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>100</y>
+      <width>88</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Display Tasks</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
