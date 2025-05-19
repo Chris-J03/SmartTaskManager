@@ -39,13 +39,16 @@ void MainWindow::on_btnAddTask_clicked()
 
 void MainWindow::displayDatabase() {
     QSqlQuery query("SELECT name, status FROM tasks");
-    ui->taskOutput->clear();
+    ui->taskDisplay->clear();
     while (query.next()) {
         QString name = query.value(0).toString();
         int status = query.value(1).toInt();
-
         QString statusText = (status == 0) ? "Pending" : "Done";
-        ui->taskOutput->append(name + " - " + statusText);
+
+        QListWidgetItem* item = new QListWidgetItem(name, ui->taskDisplay);
+        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);  // Make it checkable
+        item->setCheckState(Qt::Unchecked);
+//        ui->taskDisplay->addItem(name + " - " + statusText);
     }
 }
 
@@ -65,4 +68,3 @@ void MainWindow::connectToDatabase() {
     QSqlQuery query;
     query.exec("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, name TEXT, status INTEGER)");
 }
-
