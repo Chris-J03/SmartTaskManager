@@ -52,6 +52,9 @@
       <pointsize>20</pointsize>
      </font>
     </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::CustomContextMenu</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QListWidget::item {
     padding: 8px;
@@ -75,12 +78,12 @@ QListWidget::indicator:checked {
      <rect>
       <x>30</x>
       <y>420</y>
-      <width>88</width>
-      <height>25</height>
+      <width>101</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Clear Tasks</string>
+     <string>Clear All Tasks</string>
     </property>
    </widget>
   </widget>

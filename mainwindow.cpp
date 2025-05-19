@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    connect(ui->taskDisplay, &QListWidget::customContextMenuRequested,this, &MainWindow::showContextMenu);
     connect(ui->taskDisplay, &QListWidget::itemChanged, this, &MainWindow::onItemChanged);
     connect(ui->txtAddTask, &QLineEdit::returnPressed, this, &MainWindow::on_btnAddTask_clicked);
     connectToDatabase();
@@ -101,4 +102,36 @@ void MainWindow::on_btnClear_clicked() {
     QSqlQuery query;
     query.exec("DELETE FROM tasks");
     displayDatabase();
+}
+
+void MainWindow::showContextMenu(const QPoint &pos) {
+    QListWidgetItem *item = ui->taskDisplay->itemAt(pos);
+    if (!item) return;  // Only show menu if clicking on an item
+
+    QMenu contextMenu(this);
+
+    // Add "Delete" action
+    QAction *deleteAction = contextMenu.addAction("Clear Task");
+    connect(deleteAction, &QAction::triggered, this, &MainWindow::deleteSelectedTask);
+
+    // Show the menu
+    contextMenu.exec(ui->taskDisplay->viewport()->mapToGlobal(pos));
+}
+
+void MainWindow::deleteSelectedTask() {
+    QListWidgetItem *item = ui->taskDisplay->currentItem();
+    if (!item) return;
+
+    int taskId = item->data(Qt::UserRole).toInt();
+
+    QSqlQuery query;
+    query.prepare("DELETE FROM tasks WHERE id = ?");
+    query.addBindValue(taskId);
+
+    if (query.exec()) {
+        delete ui->taskDisplay->takeItem(ui->taskDisplay->row(item));
+        //qDebug() << "Task cleared successfully";
+    } //else {
+        //qDebug() << "Delete failed:" << query.lastError().text();
+    //}
 }
