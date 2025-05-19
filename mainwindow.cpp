@@ -21,11 +21,25 @@ MainWindow::~MainWindow()
 void MainWindow::on_btnAddTask_clicked()
 {
     QString task = ui->txtAddTask->text();
-    addToDatabase(task);
+    if (task == "") {
+        qDebug() << "Cannot insert empty string!";
+        return;
+    }
+    QSqlQuery query;
+    query.prepare("INSERT INTO tasks (name, status) VALUES (:name, :status)");
+    query.bindValue(":name", task);
+    query.bindValue(":status", 0);
+    if (!query.exec()) {
+        qDebug() << "Insert error:" << query.lastError().text();
+    } else {
+        qDebug() << "Task inserted!";
+        displayDatabase();
+    }
 }
 
 void MainWindow::displayDatabase() {
     QSqlQuery query("SELECT name, status FROM tasks");
+    ui->taskOutput->clear();
     while (query.next()) {
         QString name = query.value(0).toString();
         int status = query.value(1).toInt();
