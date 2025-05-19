@@ -48,8 +48,26 @@
     </property>
     <property name="font">
      <font>
+      <family>Serif</family>
       <pointsize>20</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QListWidget::item {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+QListWidget::indicator {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #999;
+    margin-right: 8px;
+}
+QListWidget::indicator:checked {
+    color: #4CAF50;
+    background-color: green;
+    border: 1px solid #999;
+}</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnClear">

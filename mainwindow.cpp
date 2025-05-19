@@ -48,7 +48,6 @@ void MainWindow::displayDatabase() {
         int id = query.value(0).toInt();
         QString name = query.value(1).toString();
         int status = query.value(2).toInt();
-        //QString statusText = (status == 0) ? "Pending" : "Done";
 
         QListWidgetItem* item = new QListWidgetItem(name, ui->taskDisplay);
         item->setData(Qt::UserRole, id);
@@ -81,15 +80,19 @@ void MainWindow::connectToDatabase() {
 }
 
 void MainWindow::onItemChanged(QListWidgetItem* item) {
-    if (!item) return;  // Safety check
+    if (!item) return;
 
-    int taskId = item->data(Qt::UserRole).toInt();  // Retrieve the stored id
+    int taskId = item->data(Qt::UserRole).toInt();
     int newStatus = (item->checkState() == Qt::Checked) ? 1 : 0;
 
     QSqlQuery query;
     query.prepare("UPDATE tasks SET status = :status WHERE id = :id");
     query.bindValue(":status", newStatus);
     query.bindValue(":id", taskId);
+
+    if (!query.exec()) {
+        qDebug() << "Update failed:" << query.lastError().text();
+    }
 }
 
 void MainWindow::on_btnClear_clicked() {

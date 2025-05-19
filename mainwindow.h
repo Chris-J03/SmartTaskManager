@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
+#include <QStyledItemDelegate>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,4 +28,5 @@ private:
     void displayDatabase();
     void connectToDatabase();
 };
+
 #endif // MAINWINDOW_H
