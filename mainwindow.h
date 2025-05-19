@@ -22,5 +22,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+    void displayDatabase();
 };
 #endif // MAINWINDOW_H

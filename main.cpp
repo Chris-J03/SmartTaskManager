@@ -24,21 +24,11 @@ void connectToDatabase() {
     query.exec("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, name TEXT, status INTEGER)");
 }
 
-void displayDatabase() {
-    QSqlQuery query;
-    query.exec("SELECT * FROM tasks");
-    //query.exec("SELECT * FROM status");
-    while (query.next()) {
-        qDebug() << "Task:" << query.value("name").toString(); //<< "Status:" << query.value("status").toString();
-    }
-}
-
 void addToDatabase(QString task) {
     if (task == "") {
         qDebug() << "Cannot insert empty string!";
         return;
     }
-
     QSqlQuery query;
     query.prepare("INSERT INTO tasks (name, status) VALUES (:name, :status)");
     query.bindValue(":name", task);
