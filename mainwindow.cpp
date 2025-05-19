@@ -1,14 +1,19 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "main.cpp"
 
-
+#include <QApplication>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
+#include <QDebug>
+#include <QString>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    connect(ui->taskDisplay, &QListWidget::itemChanged, this, &MainWindow::onItemChanged);
     connectToDatabase();
     displayDatabase();
 }
@@ -18,8 +23,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_btnAddTask_clicked()
-{
+void MainWindow::on_btnAddTask_clicked() {
     QString task = ui->txtAddTask->text();
     if (task == "") {
         qDebug() << "Cannot insert empty string!";
@@ -38,24 +42,29 @@ void MainWindow::on_btnAddTask_clicked()
 }
 
 void MainWindow::displayDatabase() {
-    QSqlQuery query("SELECT name, status FROM tasks");
+    QSqlQuery query("SELECT id, name, status FROM tasks");
     ui->taskDisplay->clear();
     while (query.next()) {
-        QString name = query.value(0).toString();
-        int status = query.value(1).toInt();
-        QString statusText = (status == 0) ? "Pending" : "Done";
+        int id = query.value(0).toInt();
+        QString name = query.value(1).toString();
+        int status = query.value(2).toInt();
+        //QString statusText = (status == 0) ? "Pending" : "Done";
 
         QListWidgetItem* item = new QListWidgetItem(name, ui->taskDisplay);
+        item->setData(Qt::UserRole, id);
         item->setFlags(item->flags() | Qt::ItemIsUserCheckable);  // Make it checkable
-        item->setCheckState(Qt::Unchecked);
-//        ui->taskDisplay->addItem(name + " - " + statusText);
+        if (status == 0) {
+            item->setCheckState(Qt::Unchecked);
+        } else {
+            item->setCheckState(Qt::Checked);
+        }
     }
 }
 
 void MainWindow::connectToDatabase() {
     // Create the database connection
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("tasks.db");  // SQLite file will be created in the same directory
+    db.setDatabaseName("tasks.db");
 
     if (!db.open()) {
         qDebug() << "Database error:" << db.lastError().text();
@@ -64,7 +73,22 @@ void MainWindow::connectToDatabase() {
 
     qDebug() << "Database connected successfully!";
 
-    // Create a table if not existing
+    // CREATE TABLE
     QSqlQuery query;
-    query.exec("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, name TEXT, status INTEGER)");
+    if (!query.exec("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, status INTEGER)")) {
+        qDebug() << "Create table error:" << query.lastError().text();
+    }
 }
+
+void MainWindow::onItemChanged(QListWidgetItem* item) {
+    if (!item) return;  // Safety check
+
+    int taskId = item->data(Qt::UserRole).toInt();  // Retrieve the stored id
+    int newStatus = (item->checkState() == Qt::Checked) ? 1 : 0;
+
+    QSqlQuery query;
+    query.prepare("UPDATE tasks SET status = :status WHERE id = :id");
+    query.bindValue(":status", newStatus);
+    query.bindValue(":id", taskId);
+}
+

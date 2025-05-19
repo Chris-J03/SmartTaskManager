@@ -47,6 +47,19 @@
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="btnClear">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>420</y>
+      <width>88</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Clear Tasks</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

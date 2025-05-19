@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QListWidgetItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,6 +18,7 @@ public:
 
 private slots:
     void on_btnAddTask_clicked();
+    void onItemChanged(QListWidgetItem *item);
 
 private:
     Ui::MainWindow *ui;
