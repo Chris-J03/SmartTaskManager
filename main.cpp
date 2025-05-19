@@ -7,23 +7,6 @@
 #include <QDebug>
 #include <QString>
 
-void connectToDatabase() {
-    // Create the database connection
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("tasks.db");  // SQLite file will be created in the same directory
-
-    if (!db.open()) {
-        qDebug() << "Database error:" << db.lastError().text();
-        return;
-    }
-
-    qDebug() << "Database connected successfully!";
-
-    // Create a table if not existing
-    QSqlQuery query;
-    query.exec("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, name TEXT, status INTEGER)");
-}
-
 void addToDatabase(QString task) {
     if (task == "") {
         qDebug() << "Cannot insert empty string!";
@@ -45,6 +28,5 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-    connectToDatabase();
     return a.exec();
 }

@@ -18,11 +18,10 @@ public:
 private slots:
     void on_btnAddTask_clicked();
 
-    void on_btnDisplayTask_clicked();
-
 private:
     Ui::MainWindow *ui;
 
     void displayDatabase();
+    void connectToDatabase();
 };
 #endif // MAINWINDOW_H
