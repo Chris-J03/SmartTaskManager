@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     connect(ui->taskDisplay, &QListWidget::itemChanged, this, &MainWindow::onItemChanged);
+    connect(ui->txtAddTask, &QLineEdit::returnPressed, this, &MainWindow::on_btnAddTask_clicked);
     connectToDatabase();
     displayDatabase();
 }
@@ -38,6 +39,7 @@ void MainWindow::on_btnAddTask_clicked() {
     } else {
         qDebug() << "Task inserted!";
         displayDatabase();
+        ui->txtAddTask->clear();
     }
 }
 
