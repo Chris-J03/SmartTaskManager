@@ -92,3 +92,8 @@ void MainWindow::onItemChanged(QListWidgetItem* item) {
     query.bindValue(":id", taskId);
 }
 
+void MainWindow::on_btnClear_clicked() {
+    QSqlQuery query;
+    query.exec("DELETE FROM tasks");
+    displayDatabase();
+}

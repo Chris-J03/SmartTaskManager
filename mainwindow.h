@@ -19,6 +19,7 @@ public:
 private slots:
     void on_btnAddTask_clicked();
     void onItemChanged(QListWidgetItem *item);
+    void on_btnClear_clicked();
 
 private:
     Ui::MainWindow *ui;
