@@ -40,7 +40,7 @@
    <widget class="QPushButton" name="btnDisplayTask">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>380</x>
       <y>100</y>
       <width>88</width>
       <height>25</height>
@@ -48,6 +48,16 @@
     </property>
     <property name="text">
      <string>Display Tasks</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="taskOutput">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>200</y>
+      <width>481</width>
+      <height>271</height>
+     </rect>
     </property>
    </widget>
   </widget>

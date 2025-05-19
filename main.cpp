@@ -34,6 +34,11 @@ void displayDatabase() {
 }
 
 void addToDatabase(QString task) {
+    if (task == "") {
+        qDebug() << "Cannot insert empty string!";
+        return;
+    }
+
     QSqlQuery query;
     query.prepare("INSERT INTO tasks (name, status) VALUES (:name, :status)");
     query.bindValue(":name", task);
